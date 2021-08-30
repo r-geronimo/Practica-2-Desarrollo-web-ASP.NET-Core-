@@ -1,0 +1,227 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+
+    /* Hacer una aplicación Asp.net Razor Pages, con una pagina llamada nomina, donde se liste en una tabla
+
+    nombres, apellidos, cargo, salario mensual, descuento AFP, descuento ARS, descuento ISR, total de descuentos y Salario Neto.
+
+Los datos de nombre, apellido, cargo y salario deben estar en una propiedad del Modelo de la pagina.
+Los demás campos, debe crear funciones correspondientes para calcularlos.
+Precargar por lo menos datos para 5 empleados.
+El monto a pagar de Seguro Familiar de Salud(SFS) se obtiene sacando el 3.04 % del salario mensual del empleado. Su máximo está limitado a $4,098.53.Este monto equivale al 3.04 % de 10 veces el salario mínimo($13,482.00).
+El monto a pagar de Administradora de Fondo de Pensiones(AFP) se obtiene sacando el 2.87 % del salario mensual del empleado. Su máximo está limitado a $7,738.67.Este monto equivale al 2.87 % de 20 veces el salario mínimo($13,482.00).
+El monto a pagar del Impuesto Sobre la Renta(ISR) se calcula según la info del enlace:
+
+
+Impuesto sobre la Renta
+
+https://dgii.gov.do/cicloContribuyente/obligacionesTributarias/principalesImpuestos/Paginas/impuestoSobreRenta.aspx
+
+
+  */
+
+
+    //1)  Definición de Variables de los Datos Iniciales
+
+    List<string> nombres = new List<string>()
+{"Andres","Betania","Carlos","Daniel","Eduardo" };
+
+
+    List<string> apellidos = new List<string>()
+{"Abreu","Baez","Castro","Dominguez","Estevez" };
+
+    List<string> cargo = new List<string>()
+{"Administrador","Banquero","Carpintero","Doctor","Estudiante" };
+
+    List<double> salario_mensual = new List<double>()
+{50000,40000,30000,20000,10000 };
+
+    List<double> descuento_AFP = new List<double>()
+    { };
+
+    // SFS
+    List<double> descuento_ARS = new List<double>()
+    { };
+
+    List<double> descuento_ISR = new List<double>()
+    { };
+
+    List<string> total_de_descuentos = new List<string>()
+{"Andres","Betania","Carlos","Daniel","Eduardo" };
+
+    List<double> Salario_Neto = new List<double>()
+{ };
+
+
+
+
+    // Calculos
+
+
+
+    //double salario;
+    double salarioNeto = 0;
+    double ISR = 0;
+    double AFP = 0;
+    double SFS = 0;
+
+
+
+    // Calculo del ISR
+
+    foreach (var item in salario_mensual)
+    {
+
+
+
+        if (item > 0.01 && item < 578.52)
+        {
+            ISR = (item - 0.01) * (1.92 / 100) + 0; descuento_ISR.Add(ISR);
+        }
+        else
+        {
+            if (item > 578.53 && item < 4910.18)
+            {
+                ISR = (item - 578.53) * (6.40 / 100) + 11.11; descuento_ISR.Add(ISR);
+            }
+            else
+            {
+                if (item > 4910.18 && item < 8629.20)
+                {
+                    ISR = (item - 4910.18) * (10.88 / 100) + 288.33; descuento_ISR.Add(ISR);
+                }
+                else
+                {
+                    if (item > 8629.21 && item < 10031.07)
+                    {
+                        ISR = (item - 8629.21) * (1.92 / 100) + 692.96; descuento_ISR.Add(ISR);
+                    }
+                    else
+                    {
+                        if (item > 10031.08 && item < 12009.04)
+                        { ISR = (item - 10031.08) * (16.00 / 100) + 917.26; descuento_ISR.Add(ISR); }
+                        else
+                        {
+                            if (item > 12009.05 && item < 24222.94)
+                            { ISR = (item - 12009.05) * (21.36 / 100) + 1271.87; descuento_ISR.Add(ISR); }
+                            else
+                            {
+                                ISR = (item - 24222.32) * (23.52 / 100) + 3880.44; descuento_ISR.Add(ISR);
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+
+
+
+
+            // Calculo del AFP
+
+
+
+
+            AFP = item * 0.0287; descuento_AFP.Add(AFP);
+
+
+            // Calculo del SFS
+
+            SFS = item * 0.0304; descuento_ARS.Add(SFS);
+
+
+
+            // Calculo del Salario Neto
+
+            salarioNeto = item - ISR - AFP - SFS; Salario_Neto.Add(salarioNeto);
+
+
+
+
+        }
+
+
+    }
+
+
+
+
+    }
+}
+
+
+
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Ronny Gerónimo Web </h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <ul>
+
+        <h1> Nomina 2021 </h1>
+        <h1>  </h1>
+
+
+        <h1> Nombres </h1>
+        @foreach (var item in nombres)
+        {
+            <li> @item </li>
+        }
+
+        <h1> Apellidos </h1>
+        @foreach (var item in apellidos)
+        {
+            <li> @item </li>
+        }
+
+        <h1> cargo </h1>
+        @foreach (var item in cargo)
+        {
+            <li> @item </li>
+        }
+
+        <h1> salario_mensual </h1>
+        @foreach (var item in salario_mensual)
+        {
+            <li> @item </li>
+        }
+
+        <h1> descuento_AFP </h1>
+        @foreach (var item in descuento_AFP)
+        {
+            <li> @item </li>
+        }
+
+        <h1> descuento_ARS</h1>
+        @foreach (var item in descuento_ARS)
+        {
+            <li> @item </li>
+        }
+
+        <h1> descuento_ISR </h1>
+        @foreach (var item in descuento_ISR)
+        {
+            <li> @item </li>
+        }
+
+        <h1> total_de_descuentos </h1>
+        @foreach (var item in total_de_descuentos)
+        {
+            <li> @item </li>
+        }
+
+        <h1> Salario_Neto</h1>
+        @foreach (var item in Salario_Neto)
+        {
+            <li> @item </li>
+        }
+
+    </ul>
+
+</div>

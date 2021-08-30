@@ -1,0 +1,245 @@
+﻿@page
+@model Practica_2__Desarrollo_web_ASP.NET_Core_.Pages.Nomina_de_EmpleadosModel
+@{
+
+    /*
+
+    Hacer una aplicación Asp.net Razor Pages, con una pagina llamada nomina, donde se liste en una tabla
+    nombres, apellidos, cargo, salario mensual, descuento AFP, descuento ARS, descuento ISR, total de descuentos y Salario Neto.
+    Los datos de nombre, apellido, cargo y salario deben estar en una propiedad del Modelo de la pagina. Los demás campos,
+    debe crear funciones correspondientes para calcularlos.
+    Precargar por lo menos datos para 5 empleados.
+
+
+    El monto a pagar de Seguro Familiar de Salud (SFS) se obtiene sacando el 3.04% del salario mensual del empleado. Su máximo está limitado a $4,098.53. Este monto equivale al 3.04% de 10 veces el salario mínimo ($13,482.00).
+
+    El monto a pagar de Administradora de Fondo de Pensiones (AFP) se obtiene sacando el 2.87% del salario mensual del empleado. Su máximo está limitado a $7,738.67. Este monto equivale al 2.87% de 20 veces el salario mínimo ($13,482.00).
+    El monto a pagar del Impuesto Sobre la Renta (ISR) se calcula según la info del enlace:
+
+        https://dgii.gov.do/cicloContribuyente/obligacionesTributarias/principalesImpuestos/Paginas/impuestoSobreRenta.aspx
+
+
+    */
+
+    string nombre1 = Model.Nombre;
+    string apellido1;
+    string cargo1;
+    double salario_mensual1;
+    double descuento_AFP1;
+    double descuento_ARS1;
+    double descuento_ISR1;
+    double total_de_descuentos1;
+    double Salario_Neto1;
+    string mensaje1;
+
+
+    //1)  Definición de Variables de los Datos Iniciales
+
+    List<string> nombres = new List<string>()
+{"Andres","Betania","Carlos","Daniel","Eduardo" };
+
+
+    List<string> apellidos = new List<string>()
+{"Abreu","Baez","Castro","Dominguez","Estevez" };
+
+    List<string> cargo = new List<string>()
+{"Administrador","Banquero","Carpintero","Doctor","Estudiante" };
+
+    List<double> salario_mensual = new List<double>()
+{50000,40000,30000,25000,10000 };
+
+    List<double> descuento_AFP = new List<double>()
+    { };
+
+    // SFS
+    List<double> descuento_ARS = new List<double>()
+    { };
+
+    List<double> descuento_ISR = new List<double>()
+    { };
+
+    List<string> total_de_descuentos = new List<string>()
+{"Andres","Betania","Carlos","Daniel","Eduardo" };
+
+    List<double> Salario_Neto = new List<double>()
+    { };
+
+
+
+
+    // Calculos
+
+
+
+    //double salario;
+    double salarioNeto = 0;
+    double ISR = 0;
+    double AFP = 0;
+    double SFS = 0;
+
+
+
+    // Calculo del ISR
+
+    foreach (var item in salario_mensual)
+    {
+
+
+
+        if (item > 0.01 && item < 578.52)
+        {
+            ISR = (item - 0.01) * (1.92 / 100) + 0; descuento_ISR.Add(ISR);
+        }
+        else
+        {
+            if (item > 578.53 && item < 4910.18)
+            {
+                ISR = (item - 578.53) * (6.40 / 100) + 11.11; descuento_ISR.Add(ISR);
+            }
+            else
+            {
+                if (item > 4910.18 && item < 8629.20)
+                {
+                    ISR = (item - 4910.18) * (10.88 / 100) + 288.33; descuento_ISR.Add(ISR);
+                }
+                else
+                {
+                    if (item > 8629.21 && item < 10031.07)
+                    {
+                        ISR = (item - 8629.21) * (1.92 / 100) + 692.96; descuento_ISR.Add(ISR);
+                    }
+                    else
+                    {
+                        if (item > 10031.08 && item < 12009.04)
+                        { ISR = (item - 10031.08) * (16.00 / 100) + 917.26; descuento_ISR.Add(ISR); }
+                        else
+                        {
+                            if (item > 12009.05 && item < 24222.94)
+                            { ISR = (item - 12009.05) * (21.36 / 100) + 1271.87; descuento_ISR.Add(ISR); }
+                            else
+                            {
+                                ISR = (item - 24222.32) * (23.52 / 100) + 3880.44; descuento_ISR.Add(ISR);
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+
+
+
+
+            // Calculo del AFP
+
+
+
+
+            AFP = item * 0.0287; descuento_AFP.Add(AFP);
+
+
+            // Calculo del SFS
+
+            SFS = item * 0.0304; descuento_ARS.Add(SFS);
+
+
+
+            // Calculo del Salario Neto
+
+            salarioNeto = item - ISR - AFP - SFS; Salario_Neto.Add(salarioNeto);
+
+
+
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    if (nombre1 == "Andres")
+    { apellido1 = "Abreu"; cargo1 = "Administrador";salario_mensual1 = 50000;descuento_AFP1 = descuento_AFP[0]; descuento_ARS1 = descuento_ARS[0]; descuento_ISR1 = descuento_ISR[0]; total_de_descuentos1 = descuento_AFP1 + descuento_ARS1+ descuento_ISR1;
+        Salario_Neto1 = salario_mensual1 - descuento_AFP1 - descuento_ARS1 - descuento_ISR1;
+
+    }
+    else
+    {
+        if (nombre1 == "Betania")
+        { apellido1 = "Baez"; cargo1 = "Banquero";salario_mensual1 = 40000;descuento_AFP1 = descuento_AFP[1]; descuento_ARS1 = descuento_ARS[1]; descuento_ISR1 = descuento_ISR[1]; total_de_descuentos1 = descuento_AFP1 + descuento_ARS1 + descuento_ISR1;
+            Salario_Neto1 = salario_mensual1 - descuento_AFP1 - descuento_ARS1 - descuento_ISR1;}
+        else
+        {
+            if (nombre1 == "Carlos")
+            { apellido1 = "Castro"; cargo1 = "Carpintero";salario_mensual1 = 30000;descuento_AFP1 = descuento_AFP[2]; descuento_ARS1 = descuento_ARS[2]; descuento_ISR1 = descuento_ISR[2]; total_de_descuentos1 = descuento_AFP1 + descuento_ARS1 + descuento_ISR1;
+                Salario_Neto1 = salario_mensual1 - descuento_AFP1 - descuento_ARS1 - descuento_ISR1; }
+            else
+            {
+                if (nombre1 == "Daniel")
+                { apellido1 = "Dominguez"; cargo1 = "Doctor";  salario_mensual1 = 25000; descuento_AFP1 = descuento_AFP[3]; descuento_ARS1 = descuento_ARS[3]; descuento_ISR1 = descuento_ISR[3]; total_de_descuentos1 = descuento_AFP1 + descuento_ARS1 + descuento_ISR1;
+                    Salario_Neto1 = salario_mensual1 - descuento_AFP1 - descuento_ARS1 - descuento_ISR1;
+                }
+                else
+                {
+                    if (nombre1 == "Eduardo")
+                    { apellido1 = "Estevez"; cargo1 = "Estudiante"; salario_mensual1 = 10000; descuento_AFP1 = descuento_AFP[4]; descuento_ARS1 = descuento_ARS[4]; descuento_ISR1 = descuento_ISR[4]; total_de_descuentos1 = descuento_AFP1 + descuento_ARS1 + descuento_ISR1;
+                        Salario_Neto1 = salario_mensual1 - descuento_AFP1 - descuento_ARS1 - descuento_ISR1;
+                    }
+                    else { apellido1 = " No está en la lista"; cargo1 = ""; salario_mensual1 =0; descuento_AFP1 = 0; descuento_ARS1 = 0; descuento_ISR1 = 0; total_de_descuentos1 = 0;
+                        Salario_Neto1 = salario_mensual1 - descuento_AFP1 - descuento_ARS1 - descuento_ISR1;
+                    }
+                }
+            }
+
+
+        }
+
+    }
+
+
+
+
+    // mensaje1 = "Hola"; <h1>>@mensaje1</h1>
+
+}
+
+
+
+<div>
+    <h1>Datos de la Nomina de la Persona Buscada </h1>
+    <form method="get">
+        <input type="type" name="nombre" value="Nombres Nomina" />
+        <input type="submit" value="Actualizar " />
+
+    </form>
+
+    <p>Nombre: @nombre1</p>
+    <p>Apellido: @apellido1</p>
+    <p>Cargo: @cargo1</p>
+    <p>Salario Mensual : @salario_mensual1</p>
+    <p>Descuento AFP : @descuento_AFP1</p>
+    <p>Descuento ARS : @descuento_ARS1</p>
+    <p>Descuento IRS : @descuento_ISR1</p>
+    <p>Descuento Total : @total_de_descuentos1</p>
+    <p>Salario Neto  : @Salario_Neto1 </p>
+
+
+
+</div>
